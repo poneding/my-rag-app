@@ -1,15 +1,17 @@
 import os
 
-from dotenv import load_dotenv, find_dotenv
-
-from langchain_openai import OpenAIEmbeddings
-from langchain_community.document_loaders import PyMuPDFLoader
-from langchain_community.document_loaders import UnstructuredMarkdownLoader
+from dotenv import find_dotenv, load_dotenv
 from langchain_chroma import Chroma
-from langchain_text_splitters import RecursiveCharacterTextSplitter
-from zhipuai_embedding import ZhipuAIEmbedding
+from langchain_community.document_loaders import (
+    PyMuPDFLoader,
+    UnstructuredMarkdownLoader,
+)
 from langchain_google_genai import GoogleGenerativeAIEmbeddings
+from langchain_openai import OpenAIEmbeddings
+from langchain_text_splitters import RecursiveCharacterTextSplitter
 from pydantic import SecretStr
+
+from zhipuai_embedding import ZhipuAIEmbedding
 
 _ = load_dotenv(find_dotenv())  # 加载 .env 文件中的环境变量
 

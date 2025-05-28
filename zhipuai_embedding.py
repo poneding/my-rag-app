@@ -1,4 +1,5 @@
 from typing import List, Optional
+
 from langchain_core.embeddings import Embeddings
 from pydantic import SecretStr
 from zhipuai import ZhipuAI

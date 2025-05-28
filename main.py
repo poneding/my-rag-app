@@ -1,14 +1,16 @@
-import streamlit as st
-from langchain_openai import ChatOpenAI
-from langchain_google_genai import ChatGoogleGenerativeAI
-from langchain_community.chat_models import ChatZhipuAI
 import os
+
+import streamlit as st
+from langchain_chroma import Chroma
+from langchain_community.chat_models import ChatZhipuAI
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.runnables import RunnableBranch, RunnablePassthrough
-from langchain_chroma import Chroma
-from embedding import get_embeddings, vector_db_path
+from langchain_google_genai import ChatGoogleGenerativeAI
+from langchain_openai import ChatOpenAI
 from pydantic import SecretStr
+
+from embedding import get_embeddings, vector_db_path
 
 
 def get_retriever():
