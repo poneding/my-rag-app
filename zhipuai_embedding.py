@@ -1,17 +1,21 @@
-from typing import List
+from typing import List, Optional
 from langchain_core.embeddings import Embeddings
+from pydantic import SecretStr
 from zhipuai import ZhipuAI
 
 
 class ZhipuAIEmbedding(Embeddings):
-    def __init__(self, api_key: str):
-        self.client = ZhipuAI(api_key=api_key)
+    def __init__(
+        self, api_key: Optional[SecretStr], model: str = "glm-4-plus-embedding"
+    ):
+        self.model = model
+        self.client = ZhipuAI(api_key=api_key.get_secret_value() if api_key else None)
 
     def embed_documents(self, texts: List[str]):
         result = []
         for i in range(0, len(texts), 64):
             embeddings = self.client.embeddings.create(
-                model="embedding-3", input=texts[i : i + 64]
+                model=self.model, input=texts[i : i + 64]
             )
             result.extend([embeddings.embedding for embeddings in embeddings.data])
         return result

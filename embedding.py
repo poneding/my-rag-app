@@ -9,6 +9,7 @@ from langchain_chroma import Chroma
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from zhipuai_embedding import ZhipuAIEmbedding
 from langchain_google_genai import GoogleGenerativeAIEmbeddings
+from pydantic import SecretStr
 
 _ = load_dotenv(find_dotenv())  # 加载 .env 文件中的环境变量
 
@@ -17,16 +18,24 @@ def get_embeddings():
     """获取 OpenAI 的 Embeddings 实例"""
 
     # OpenAI
-    # return OpenAIEmbeddings(api_key=os.getenv("OPENAI_API_KEY"))
+    # openai_api_key = os.getenv("OPENAI_API_KEY")
+    # return OpenAIEmbeddings(
+    #     api_key=SecretStr(openai_api_key) if openai_api_key else None
+    # )
 
     # Gemini
+    # google_api_key = os.getenv("GOOGLE_API_KEY")
     # return GoogleGenerativeAIEmbeddings(
-    #     google_api_key=os.getenv("GOOGLE_API_KEY"),
+    #     google_api_key=SecretStr(google_api_key) if google_api_key else None,
     #     model="models/gemini-embedding-exp-03-07",  # models/text-embedding-004
     # )
 
     # 智谱 AI
-    return ZhipuAIEmbedding(api_key=os.getenv("ZHIPUAI_API_KEY"))
+    zhipuai_api_key = os.getenv("ZHIPUAI_API_KEY")
+    return ZhipuAIEmbedding(
+        api_key=SecretStr(zhipuai_api_key) if zhipuai_api_key else None,
+        model="glm-4-plus-embedding",
+    )
 
 
 def document_path():

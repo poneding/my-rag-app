@@ -33,9 +33,9 @@ def get_qa_history_chain():
     # )
 
     # Gemini
-    # llm = ChatGoogleGenerativeAI(
-    #     api_key=os.getenv("GOOGLE_API_KEY"), model="gemini-2.0-flash"
-    # )
+    llm = ChatGoogleGenerativeAI(
+        google_api_key=os.getenv("GOOGLE_API_KEY"), model="gemini-2.0-flash"
+    )
 
     # 智谱 AI
     llm = ChatZhipuAI(api_key=os.getenv("ZHIPUAI_API_KEY"), model="glm-4-plus")
@@ -52,7 +52,7 @@ def get_qa_history_chain():
 
     retrieve_docs = RunnableBranch(
         (
-            lambda x: not x.get("chat_history", False),
+            lambda x: not (isinstance(x, dict) and x.get("chat_history", False)),
             (lambda x: x["input"]) | retriever,
         ),
         condense_question_prompt | llm | StrOutputParser() | retriever,
