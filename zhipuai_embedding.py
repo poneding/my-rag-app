@@ -5,9 +5,7 @@ from zhipuai import ZhipuAI
 
 
 class ZhipuAIEmbedding(Embeddings):
-    def __init__(
-        self, api_key: Optional[SecretStr], model: str = "glm-4-plus-embedding"
-    ):
+    def __init__(self, api_key: Optional[SecretStr], model: str = "embedding-3"):
         self.model = model
         self.client = ZhipuAI(api_key=api_key.get_secret_value() if api_key else None)
 

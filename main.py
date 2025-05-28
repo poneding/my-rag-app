@@ -8,6 +8,7 @@ from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.runnables import RunnableBranch, RunnablePassthrough
 from langchain_chroma import Chroma
 from embedding import get_embeddings, vector_db_path
+from pydantic import SecretStr
 
 
 def get_retriever():
@@ -26,19 +27,24 @@ def get_qa_history_chain():
     retriever = get_retriever()
 
     # OpenAI
+    # openai_api_key = os.getenv("OPENAI_API_KEY")
     # llm = ChatOpenAI(
-    #     model_name=os.getenv("OPENAI_DEFAULT_MODEL"),
+    #     api_key=SecretStr(openai_api_key) if openai_api_key else None,
+    #     model="gpt-4o",
     #     temperature=0,
     #     base_url=os.getenv("OPENAI_API_BASE"),
     # )
 
     # Gemini
-    llm = ChatGoogleGenerativeAI(
-        google_api_key=os.getenv("GOOGLE_API_KEY"), model="gemini-2.0-flash"
-    )
+    # google_api_key = os.getenv("GOOGLE_API_KEY")
+    # llm = ChatGoogleGenerativeAI(
+    #     google_api_key=SecretStr(google_api_key) if google_api_key else None,
+    #     model="gemini-2.0-flash",
+    # )
 
     # 智谱 AI
-    llm = ChatZhipuAI(api_key=os.getenv("ZHIPUAI_API_KEY"), model="glm-4-plus")
+    llm = ChatZhipuAI(api_key=os.getenv("ZHIPUAI_API_KEY"), model="glm-4")
+
     condense_question_system_template = (
         "请根据聊天记录总结用户最近的问题，" "如果没有多余的聊天记录则返回用户的问题。"
     )
@@ -59,9 +65,9 @@ def get_qa_history_chain():
     )
 
     system_prompt = (
-        "你是一个问答任务的助手。 "
+        "你是一个胖东来企业文化培训助手。 "
         "请使用检索到的上下文片段回答这个问题。 "
-        "如果你不知道答案就说不知道。 "
+        "如果没有命中相关的上下文片段，请回复：我尚不清楚。"
         "请使用简洁的话语回答用户。"
         "\n\n"
         "{context}"
@@ -112,7 +118,7 @@ def main():
     for message in st.session_state.messages:
         with messages.chat_message(message[0]):
             st.write(message[1])
-    if prompt := st.chat_input("Say something"):
+    if prompt := st.chat_input("开始向小助手提问吧！"):
         # 将用户输入添加到对话历史中
         st.session_state.messages.append(("human", prompt))
         with messages.chat_message("human"):

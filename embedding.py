@@ -34,7 +34,7 @@ def get_embeddings():
     zhipuai_api_key = os.getenv("ZHIPUAI_API_KEY")
     return ZhipuAIEmbedding(
         api_key=SecretStr(zhipuai_api_key) if zhipuai_api_key else None,
-        model="glm-4-plus-embedding",
+        model="embedding-3",
     )
 
 
