@@ -12,6 +12,7 @@ dependencies = [
     "langchain-google-genai>=2.1.4",
     "langchain-openai>=0.3.18",
     "langchain-text-splitters>=0.3.8",
+    "langchain-zhipuai-dev>=0.3.0",
     "pymupdf>=1.26.0",
     "streamlit>=1.45.1",
     "zhipu>=1.0.1",

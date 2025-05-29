@@ -9,9 +9,8 @@ from langchain_community.document_loaders import (
 from langchain_google_genai import GoogleGenerativeAIEmbeddings
 from langchain_openai import OpenAIEmbeddings
 from langchain_text_splitters import RecursiveCharacterTextSplitter
+from langchain_zhipuai_dev.embedding import ZhipuAIEmbeddings
 from pydantic import SecretStr
-
-from zhipuai_embedding import ZhipuAIEmbedding
 
 _ = load_dotenv(find_dotenv())  # 加载 .env 文件中的环境变量
 
@@ -34,7 +33,7 @@ def get_embeddings():
 
     # 智谱 AI
     zhipuai_api_key = os.getenv("ZHIPUAI_API_KEY")
-    return ZhipuAIEmbedding(
+    return ZhipuAIEmbeddings(
         api_key=SecretStr(zhipuai_api_key) if zhipuai_api_key else None,
         model="embedding-3",
     )
